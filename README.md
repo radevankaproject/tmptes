@@ -33,6 +33,12 @@
 
 ## 📖 Tentang Aplikasi & Penelitian Skripsi
 
+> [!NOTE]
+> **Catatan Historis & Milestone Akademik (Pre-AI Era 2019)**:  
+> Proyek ini merupakan karya orisinal penelitian **Tugas Akhir / Skripsi Sarjana Teknik Informatika** yang diselesaikan pada tahun **2019** di **Universitas Islam Negeri Sultan Syarif Kasim Riau (UIN Suska Riau)**.  
+> 
+> Dibuat di era sebelum hadirnya ChatGPT, GitHub Copilot, Claude, maupun AI generatif lainnya — semua penurunan rumus pemulusan kuadratik tiga tingkat Robert G. Brown, kalkulasi matriks peramalan, hingga kodingan PHP native diketik murni secara manual melalui studi literatur buku statistik, jurnal ilmiah, dan bimbingan dosen di kampus. ☕🔥
+
 Aplikasi ini merupakan implementasi dari penelitian **Tugas Akhir / Skripsi** dengan identitas akademik sebagai berikut:
 
 | Informasi Akademik | Detail Penelitian |
@@ -53,7 +59,7 @@ Aplikasi ini merupakan implementasi dari penelitian **Tugas Akhir / Skripsi** de
 
 Sebelumnya, proses rekapitulasi dan estimasi pemesanan tiket setiap triwulan di UPT PAP Dinas Perhubungan Kota Pekanbaru masih dilakukan secara manual menggunakan *Microsoft Excel* berdasarkan perkiraan kasar tahun sebelumnya. Hal tersebut mengakibatkan ketidakseimbangan antara jumlah pemesanan dan realisasi pemakaian tiket (kekurangan tiket pada triwulan tertentu atau kelebihan sisa tiket di akhir tahun yang tidak dapat dipakai kembali).
 
-Melalui aplikasi ini, diterapkan metode **Triple Exponential Smoothing (Metode Satu Parameter Brown)** berbasis data deret waktu (*time series*) tahun **2015–2018** untuk memprediksi kebutuhan persediaan tiket pada tahun berikutnya secara akurat. Hasil pengujian menunjukkan nilai parameter optimal pada **$\alpha = 0.5$** dengan nilai kesalahan peramalan **Mean Absolute Percentage Error (MAPE) di bawah 10%** (rata-rata MAPE **9.24%** / akurasi **90.76%**), yang berarti kinerja peramalan tergolong **sangat baik (*very good*)**.
+Melalui aplikasi ini, diterapkan metode **Triple Exponential Smoothing (Metode Satu Parameter Brown)** berbasis data deret waktu (*time series*) tahun **2015–2018** untuk memprediksi kebutuhan persediaan tiket pada tahun berikutnya secara akurat. Hasil pengujian menunjukkan nilai parameter optimal pada $\alpha = 0.5$ dengan nilai kesalahan peramalan **Mean Absolute Percentage Error (MAPE) di bawah 10%** (rata-rata MAPE **9.24%** / akurasi **90.76%**), yang berarti kinerja peramalan tergolong **sangat baik (*very good*)**.
 
 ---
 
@@ -94,38 +100,67 @@ Metode **Triple Exponential Smoothing Satu Parameter dari Brown** adalah metode 
 
 Tahapan perhitungannya adalah sebagai berikut:
 
-1. **Menentukan Pemulusan Pertama (*Single Smoothing* — $S'_t$)**
-   $$S'_t = \alpha X_t + (1 - \alpha) S'_{t-1}$$
-   *(Untuk periode awal $t = 1$, ditetapkan $S'_1 = S''_1 = S'''_1 = X_1$).*
+### 1. Pemulusan Pertama (*Single Smoothing* — $S'_t$)
 
-2. **Menentukan Pemulusan Kedua (*Double Smoothing* — $S''_t$)**
-   $$S''_t = \alpha S'_t + (1 - \alpha) S''_{t-1}$$
+$$
+S'_t = \alpha X_t + (1 - \alpha) S'_{t-1}
+$$
 
-3. **Menentukan Pemulusan Ketiga (*Triple Smoothing* — $S'''_t$)**
-   $$S'''_t = \alpha S''_t + (1 - \alpha) S'''_{t-1}$$
+*(Untuk periode awal $t = 1$, ditetapkan $S'_1 = S''_1 = S'''_1 = X_1$).*
 
-4. **Menentukan Nilai Konstanta ($a_t$)**
-   $$a_t = 3S'_t - 3S''_t + S'''_t$$
+### 2. Pemulusan Kedua (*Double Smoothing* — $S''_t$)
 
-5. **Menentukan Nilai Slope Linier ($b_t$)**
-   $$b_t = \frac{\alpha}{2(1 - \alpha)^2} \left[ (6 - 5\alpha)S'_t - (10 - 8\alpha)S''_t + (4 - 3\alpha)S'''_t \right]$$
+$$
+S''_t = \alpha S'_t + (1 - \alpha) S''_{t-1}
+$$
 
-6. **Menentukan Nilai komponen Kuadratik ($c_t$)**
-   $$c_t = \frac{\alpha^2}{(1 - \alpha)^2} \left( S'_t - 2S''_t + S'''_t \right)$$
+### 3. Pemulusan Ketiga (*Triple Smoothing* — $S'''_t$)
 
-7. **Menghitung Nilai Peramalan Periode Berikutnya ($F_{t+m}$)**
-   $$F_{t+m} = a_t + b_t(m) + \frac{1}{2}c_t(m^2)$$
-   *(Di mana $m$ adalah jumlah periode ke depan yang diramalkan, yakni $m = 1$ untuk 1 tahun berikutnya).*
+$$
+S'''_t = \alpha S''_t + (1 - \alpha) S'''_{t-1}
+$$
 
-8. **Menghitung Akurasi Peramalan dengan MAPE (*Mean Absolute Percentage Error*)**
-   $$\text{PE}_t = \left| \frac{X_t - F_t}{F_t} \right| \times 100\% \quad , \quad \text{MAPE} = \frac{\sum_{t=1}^{n} \text{PE}_t}{n}$$
-   $$\text{Akurasi} = 100\% - \text{MAPE}$$
+### 4. Penentuan Nilai Konstanta ($a_t$)
 
-   **Kriteria Nilai MAPE:**
-   - $\text{MAPE} < 10\%$: Kemampuan peramalan **Sangat Baik**
-   - $10\% \le \text{MAPE} < 20\%$: Kemampuan peramalan **Baik**
-   - $20\% \le \text{MAPE} < 50\%$: Kemampuan peramalan **Cukup / Layak**
-   - $\text{MAPE} \ge 50\%$: Kemampuan peramalan **Buruk**
+$$
+a_t = 3S'_t - 3S''_t + S'''_t
+$$
+
+### 5. Penentuan Nilai Slope Linier ($b_t$)
+
+$$
+b_t = \frac{\alpha}{2(1 - \alpha)^2} \left[ (6 - 5\alpha)S'_t - (10 - 8\alpha)S''_t + (4 - 3\alpha)S'''_t \right]
+$$
+
+### 6. Penentuan Nilai Komponen Kuadratik ($c_t$)
+
+$$
+c_t = \frac{\alpha^2}{(1 - \alpha)^2} \left( S'_t - 2S''_t + S'''_t \right)
+$$
+
+### 7. Perhitungan Nilai Peramalan Periode Berikutnya ($F_{t+m}$)
+
+$$
+F_{t+m} = a_t + b_t(m) + \frac{1}{2}c_t(m^2)
+$$
+
+*(Di mana $m$ adalah jumlah periode ke depan yang diramalkan, yakni $m = 1$ untuk 1 tahun berikutnya).*
+
+### 8. Pengukuran Akurasi Model dengan MAPE (*Mean Absolute Percentage Error*)
+
+$$
+\text{PE}_t = \left| \frac{X_t - F_t}{F_t} \right| \times 100\% \quad , \quad \text{MAPE} = \frac{\sum_{t=1}^{n} \text{PE}_t}{n}
+$$
+
+$$
+\text{Akurasi} = 100\% - \text{MAPE}
+$$
+
+**Kriteria Nilai MAPE (Lewis, 1982):**
+- $\text{MAPE} \lt 10\%$: Kemampuan peramalan **Sangat Baik (*Highly Accurate*)**
+- $10\% \le \text{MAPE} \lt 20\%$: Kemampuan peramalan **Baik (*Good*)**
+- $20\% \le \text{MAPE} \lt 50\%$: Kemampuan peramalan **Cukup / Layak (*Reasonable*)**
+- $\text{MAPE} \ge 50\%$: Kemampuan peramalan **Buruk / Tidak Akurat (*Inaccurate*)**
 
 ---
 
