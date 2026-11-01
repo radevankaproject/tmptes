@@ -1,0 +1,45 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+#back nav
+RewriteRule ^user$ ?m=user [L]
+RewriteRule ^user/tambah$ ?m=user&a=tambah [L]
+RewriteRule ^user/update/([0-9]+)$ ?m=user&a=update&id=$1 [L]
+RewriteRule ^user/delete/([0-9]+)$ ?m=user&a=delete&id=$1 [L]
+
+RewriteRule ^jenis$ ?m=jenis [L]
+RewriteRule ^jenis/tambah$ ?m=jenis&a=tambah [L]
+RewriteRule ^jenis/update/([0-9]+)$ ?m=jenis&a=update&id=$1 [L]
+RewriteRule ^jenis/delete/([0-9]+)$ ?m=jenis&a=delete&id=$1 [L]
+
+RewriteRule ^koridor$ ?m=koridor [L]
+RewriteRule ^koridor/tambah$ ?m=koridor&a=tambah [L]
+RewriteRule ^koridor/update/([0-9]+)$ ?m=koridor&a=update&id=$1 [L]
+RewriteRule ^koridor/delete/([0-9]+)$ ?m=koridor&a=delete&id=$1 [L]
+
+RewriteRule ^penjualan$ ?m=penjualan [L]
+RewriteRule ^penjualan/([0-9]+)$ ?m=penjualan&thn=$1 [L]
+RewriteRule ^penjualan/tambah$ ?m=penjualan&a=tambah [L]
+RewriteRule ^penjualan/reset$ ?m=penjualan&a=reset [L]
+RewriteRule ^penjualan/update/([0-9]+)$ ?m=penjualan&a=update&id=$1 [L]
+RewriteRule ^penjualan/delete/([0-9]+)$ ?m=penjualan&a=delete&id=$1 [L]
+
+RewriteRule ^datauji$ ?m=datauji [L]
+RewriteRule ^datauji/tambah$ ?m=datauji&a=tambah [L]
+RewriteRule ^datauji/update/([0-9]+)$ ?m=datauji&a=update&id=$1 [L]
+RewriteRule ^datauji/delete/([0-9]+)$ ?m=datauji&a=delete&id=$1 [L]
+
+RewriteRule ^pengaturan$ ?m=pengaturan [L]
+RewriteRule ^prediksi$ ?m=prediksi [L]
+RewriteRule ^prediksi/simpan$ ?m=prediksi&a=simpan [L]
+RewriteRule ^prediksi/([0-9]+)$ ?m=prediksi&thn=$1 [L]
+RewriteRule ^prediksi/detail/([0-9]+)$ ?m=prediksi&a=detail&id=$1 [L]
+RewriteRule ^prediksi/detail/([0-9]+)/([0-9]+)$ ?m=prediksi&a=detail&id=$1&thn=$2 [L]
+
+RewriteRule ^login$ ?m=login [L]
+RewriteRule ^logout$ ?m=logout [L]
+
+
+
+Options All -Indexes
+</IfModule>
